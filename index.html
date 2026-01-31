@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A community-driven hub for sharing and discovering local resources.">
+<title>Community Resource Hub</title>
+
+<link rel="stylesheet" href="fonts/megaten_20xx/font.css">
+
+<style>
+/* =====================
+   Basic Reset
+===================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* =====================
+   Body & Background
+===================== */
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url('images/logo_02.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.6);
+    z-index: -1;
+}
+
+/* =====================
+   Header & Navigation
+===================== */
+header {
+    background: rgba(33, 150, 243, 0.9); /* Changed from green to blue */
+    color: white;
+    padding: 20px 0;
+    width: 100%;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    z-index: 100;
+}
+
+nav ul {
+    list-style: none;
+    margin-top: 10px;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 12px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* =====================
+   Main Content
+===================== */
+main {
+    margin-top: 120px;
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+    text-align: center;
+}
+
+/* =====================
+   Page Switching
+===================== */
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+section {
+    margin-bottom: 60px;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+/* =====================
+   Featured Resources
+===================== */
+#highlight-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.highlight {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.highlight h3 {
+    margin-bottom: 10px;
+}
+
+.highlight a {
+    display: inline-block;
+    margin-top: 10px;
+    color: #4CAF50;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.highlight a:hover {
+    text-decoration: underline;
+}
+
+/* =====================
+   Forms & Inputs
+===================== */
+form div {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+input, select, textarea, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #43a047;
+}
+
+/* =====================
+   Footer
+===================== */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #333;
+    color: white;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding-bottom: 30px; /* Adjust for spacing */
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Community Resource Hub</h1>
+    <nav aria-label="Main navigation">
+        <ul>
+            <li><a onclick="showPage('home')">Home</a></li>
+            <li><a onclick="showPage('directory')">Resource Directory</a></li>
+            <li><a onclick="showPage('featured')">Featured Resources</a></li>
+            <li><a onclick="showPage('local-government')">Local Government</a></li>
+            <li><a onclick="showPage('submit')">Submit Resource</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+
+<!-- HOME -->
+<section id="home" class="page active">
+    <h2>Welcome</h2>
+    <p>
+        Your go-to place for finding community resources and helping others
+        by contributing new ones.
+    </p>
+</section>
+
+<!-- RESOURCE DIRECTORY -->
+<section id="directory" class="page">
+    <h2>Community Resources</h2>
+
+    <input type="text" id="search-bar" placeholder="Search resources..." onkeyup="filterResources()">
+
+    <select id="filter-category" onchange="filterResources()">
+        <option value="all">All Categories</option>
+        <option value="education">Education</option>
+        <option value="health">Health</option>
+        <option value="food">Food</option>
+        <option value="housing">Housing</option>
+	<option value="other">Other</option>
+    </select>
+
+    <div id="resource-list"></div>
+</section>
+
+<!-- FEATURED RESOURCES -->
+<section id="featured" class="page">
+    <h2>Featured Community Resources</h2>
+
+    <div id="highlight-section">
+
+        <article class="highlight">
+            <h3>Local Food Bank</h3>
+            <p>Provides food for families in need.</p>
+            <a href="#" target="_blank">Learn more</a>
+        </article>
+
+        <article class="highlight">
+            <h3>Mental Health Support</h3>
+            <p>Support for individuals facing mental health challenges.</p>
+            <a href="#" target="_blank">Learn more</a>
+        </article>
+
+        <article class="highlight">
+            <h3>Affordable Housing Info</h3>
+            <p>Information on affordable housing in the area.</p>
+            <a href="#" target="_blank">Learn more</a>
+        </article>
+
+        <!-- New Resource: Animal Shelters -->
+        <article class="highlight">
+            <h3>Animal Shelters</h3>
+            <p>Find shelters providing care and adoption for animals.</p>
+            <a href="#" target="_blank">Learn more</a>
+        </article>
+
+	<article class="highlight">
+	    <h3>Local Education</h3>
+	    <p>Find our local Education.</p>
+	    <a href="#" target="_blank">Learn more</a>
+	</article>
+
+    </div>
+</section>
+
+<!-- LOCAL GOVERNMENT -->
+<section id="local-government" class="page">
+    <h2>Local Government Resources</h2>
+
+    <div id="highlight-section">
+
+        <article class="highlight">
+            <h3>City Hall Services</h3>
+            <p>Information on city council meetings, services, and departments.</p>
+            <a href="#" target="_blank">Learn more</a>
+        </article>
+
+        <article class="highlight">
+            <h3>Public Housing Assistance</h3>
+            <p>Local government programs for housing support and subsidies.</p>
+            <a href="#" target="_blank">Learn more</a>
+        </article>
+
+        <article class="highlight">
+            <h3>Taxpayer Services</h3>
+            <p>Resources related to paying taxes, filing returns, and understanding local tax laws.</p>
+            <a href="#" target="_blank">Learn more</a>
+        </article>
+
+        <article class="highlight">
+            <h3>Voter Registration</h3>
+            <p>How to register to vote in local elections and stay informed about polling locations.</p>
+            <a href="#" target="_blank">Learn more</a>
+        </article>
+
+    </div>
+</section>
+
+<!-- SUBMIT RESOURCE -->
+<section id="submit" class="page">
+    <h2>Submit a New Resource</h2>
+
+    <form id="resource-form">
+        <div>
+            <label>Resource Name</label>
+            <input type="text" required>
+        </div>
+
+        <div>
+            <label>Category</label>
+            <select required>
+                <option value="education">Education</option>
+                <option value="health">Health</option>
+                <option value="food">Food</option>
+                <option value="housing">Housing</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Description</label>
+            <textarea rows="4" required></textarea>
+        </div>
+
+        <div>
+            <label>Website Link</label>
+            <input type="url" placeholder="https://example.com" required>
+        </div>
+
+        <button type="submit">Submit Resource</button>
+    </form>
+</section>
+
+</main>
+
+<footer>
+    <p>&copy; 2026 Community Resource Hub. All rights reserved.</p>
+</footer>
+
+<script>
+const resources = [
+    { name: "Local Food Bank", category: "food", description: "Provides food for families in need.", link: "#" },
+    { name: "Mental Health Support", category: "health", description: "Support for individuals facing mental health challenges.", link: "#" },
+    { name: "Affordable Housing Info", category: "housing", description: "Information on affordable housing in the area.", link: "#" },
+    { name: "City Hall Services", category: "government", description: "Information on city council meetings, services, and departments.", link: "#" },
+    { name: "Public Housing Assistance", category: "government", description: "Local government programs for housing support and subsidies.", link: "#" },
+    { name: "Voter Registration", category: "government", description: "How to register to vote in local elections and stay informed about polling locations.", link: "#" },
+];
+
+function showPage(pageId) {
+    const pages = document.querySelectorAll('.page');
+    pages.forEach(page => page.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+}
+
+function filterResources() {
+    const searchQuery = document.getElementById('search-bar').value.toLowerCase();
+    const selectedCategory = document.getElementById('filter-category').value;
+
+    const filteredResources = resources.filter(resource => {
+        const matchesSearch = resource.name.toLowerCase().includes(searchQuery) || resource.description.toLowerCase().includes(searchQuery);
+        const matchesCategory = selectedCategory === "all" || resource.category === selectedCategory;
+        return matchesSearch && matchesCategory;
+    });
+
+    displayResources(filteredResources);
+}
+
+function displayResources(resourcesToDisplay) {
+    const resourceList = document.getElementById('resource-list');
+    resourceList.innerHTML = "";
+
+    if (resourcesToDisplay.length === 0) {
+        resourceList.innerHTML = "<p>No resources found.</p>";
+    } else {
+        resourcesToDisplay.forEach(resource => {
+            const resourceElement = document.createElement('div');
+            resourceElement.classList.add('highlight');
+            resourceElement.innerHTML = `
+                <h3>${resource.name}</h3>
+                <p>${resource.description}</p>
+                <a href="${resource.link}" target="_blank">Learn more</a>
+            `;
+            resourceList.appendChild(resourceElement);
+        });
+    }
+}
+
+// Initial display of all resources
+displayResources(resources);
+</script>
+
+</body>
+</html>
